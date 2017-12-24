@@ -1,3 +1,5 @@
+import Vector from '@nonphoto/vector'
+
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('canvas')
     canvas.width = 192
@@ -7,10 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const context = canvas.getContext('2d')
 
-    let mouse = {
-        x: 0,
-        y: 0
-    }
+    let mouse = new Vector()
 
     const gridWidth = 12
     const gridHeight = 10
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rx = (x - canvasBounds.left) / canvasBounds.width * canvas.width
         const ry = (y - canvasBounds.top) / canvasBounds.height * canvas.height
 
-        return {x: rx, y: ry}
+        return new Vector(rx, ry)
     }
 
     document.addEventListener('mousemove', (event) => {
