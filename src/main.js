@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = 192
     canvas.height = 128
 
-    const canvasBounds = canvas.getBoundingClientRect()
+    let canvasBounds = canvas.getBoundingClientRect()
 
     const context = canvas.getContext('2d')
 
@@ -51,6 +51,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return new Vector(rx, ry)
     }
+
+    window.addEventListener('resize', () => {
+        canvasBounds = canvas.getBoundingClientRect()
+    })
 
     document.addEventListener('mousemove', (event) => {
         mouse = clientToCanvasCoordinates(event.clientX, event.clientY)
