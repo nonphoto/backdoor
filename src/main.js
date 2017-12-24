@@ -1,46 +1,22 @@
 import Vector from '@nonphoto/vector'
 
-document.addEventListener('DOMContentLoaded', () => {
+import Grid from './grid'
+
+window.addEventListener('load', () => {
     const canvas = document.getElementById('canvas')
     canvas.width = 192
     canvas.height = 128
 
-    let canvasBounds = canvas.getBoundingClientRect()
-
     const context = canvas.getContext('2d')
 
+    let canvasBounds = canvas.getBoundingClientRect()
     let mouse = new Vector()
-
-    const gridWidth = 12
-    const gridHeight = 10
-    const tileSize = 10
-
-    let tileMap = []
-    for (let j = 0; j < gridHeight; j++) {
-
-        let tileColumn = []
-        for (let i = 0; i < gridWidth; i++) {
-            tileColumn.push(Math.random() > 0.5)
-        }
-
-        tileMap.push(tileColumn)
-    }
+    let grid = new Grid(12, 10, 10)
 
     function draw() {
         context.clearRect(0, 0, canvas.width, canvas.height)
 
-        context.fillStyle = 'rgb(100, 100, 100)'
-
-        for (let j = 0; j < gridHeight; j++) {
-            for (let i = 0; i < gridWidth; i++) {
-                const x = i * tileSize
-                const y = j * tileSize
-
-                if (tileMap[j][i]) {
-                    context.fillRect(x, y, tileSize - 1, tileSize - 1)
-                }
-            }
-        }
+        grid.draw(context)
 
         window.requestAnimationFrame(draw)
     }
@@ -61,11 +37,10 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     document.addEventListener('click', (event) => {
-        const {x, y} = clientToCanvasCoordinates(event.clientX, event.clientY)
-        const i = Math.floor(x / tileSize)
-        const j = Math.floor(y / tileSize)
-
-        tileMap[j][i] = !tileMap[j][i]
+        const coordinates = clientToCanvasCoordinates(event.clientX, event.clientY)
+        const index = grid.toIndex(coordinates)
+        const tile = grid.getTile(index)
+        grid.setTile(index, !tile)
     })
 
     draw()
